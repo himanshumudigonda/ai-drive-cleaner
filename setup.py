@@ -33,4 +33,9 @@ setup(
         "Operating System :: Microsoft :: Windows",
         "Environment :: Console",
     ],
+    keywords="ai cleaner groq textual tui windows bloatware",
+    project_urls={
+        "Source": "https://github.com/himanshumudigonda/ai-drive-cleaner",
+        "Tracker": "https://github.com/himanshumudigonda/ai-drive-cleaner/issues",
+    },
 )

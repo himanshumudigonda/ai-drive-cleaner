@@ -3,8 +3,8 @@ from typing import List, Dict, Tuple
 from groq import Groq
 
 MODELS = [
-    "moonshotai/Kimi-K2-Instruct-0905",
-    "qwen/qwen3-32b",
+    "llama3-8b-8192",
+    "mixtral-8x7b-32768",
     "llama-3.3-70b-versatile"
 ]
 
@@ -54,8 +54,8 @@ def run_ai_analysis(api_key: str, files: List[Dict]):
         try:
             active_model = model
             
-            # Batch size of 80
-            batch_size = 80
+            # Batch size of 20 to avoid rate limits
+            batch_size = 20
             for i in range(0, len(files), batch_size):
                 batch = files[i:i + batch_size]
                 batch_results = analyze_batch(client, batch, model)
