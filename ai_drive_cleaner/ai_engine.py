@@ -42,18 +42,16 @@ def analyze_batch(client: Groq, batch: List[Dict], model: str) -> List[Dict]:
     except json.JSONDecodeError:
         return []
 
-def run_ai_analysis(api_key: str, files: List[Dict]) -> Tuple[List[Dict], str]:
+def run_ai_analysis(api_key: str, files: List[Dict]):
     """
     Run the files through the AI engine, batching them 80 at a time.
-    Tries models in order of priority.
+    Tries models in order of priority. Yields results back for UI updates.
     """
     client = get_client(api_key)
-    active_model = MODELS[0]
     
     # Try models in order
     for model in MODELS:
         try:
-            results = []
             active_model = model
             
             # Batch size of 80
@@ -61,11 +59,11 @@ def run_ai_analysis(api_key: str, files: List[Dict]) -> Tuple[List[Dict], str]:
             for i in range(0, len(files), batch_size):
                 batch = files[i:i + batch_size]
                 batch_results = analyze_batch(client, batch, model)
-                results.extend(batch_results)
+                yield batch_results, active_model
                 
-            return results, active_model
+            return # Success, exit generator
         except Exception as e:
-            print(f"\\n[Warning] Model {model} failed: {e}. Trying next model...")
+            yield [{"error": f"Model {model} failed: {e}. Trying next..."}], model
             continue
             
     raise Exception("All Groq models failed to analyze the files.")

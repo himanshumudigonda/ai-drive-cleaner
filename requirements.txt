@@ -1,3 +1,4 @@
 groq==0.5.0
 rich==13.7.1
 python-dotenv==1.0.1
+textual==0.52.1
